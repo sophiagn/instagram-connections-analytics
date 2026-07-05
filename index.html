@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Instagram Connections Analyzer</title>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="app">
+        <h1>Instagram Connections Analyzer</h1>
+        <p class="subtext">Find out who doesn't follow you back by uploading your Instagram followers and following data.</p>
+
+        <section class="help-section">
+            <button class="help-toggle" type="button" @click="showHelp = !showHelp" :aria-expanded="showHelp">
+                <span class="chevron" :class="{ open: showHelp }" aria-hidden="true"></span>
+                <span>How to download your Instagram data</span>
+            </button>
+
+            <div v-show="showHelp" class="help-panel">
+                <p class="help-intro">Follow these steps to export the two JSON files this app needs.</p>
+                <div class="help-steps">
+                    <article class="help-step">
+                        <div>
+                            <h3>Step 1</h3>
+                            <p>Go to your profile and open Settings and privacy.</p>
+                        </div>
+                    </article>
+                    <article class="help-step">
+                        <div>
+                            <h3>Step 2</h3>
+                            <p>Open Accounts Center, then your information and permissions.</p>
+                        </div>
+                    </article>
+                    <article class="help-step">
+                        <div>
+                            <h3>Step 3</h3>
+                            <p>Click export your information, create export.</p>
+                        </div>
+                    </article>
+                    <article class="help-step">
+                        <div>
+                            <h3>Step 4</h3>
+                            <p>Choose to export to device.</p>
+                        </div>
+                    </article>
+                    <article class="help-step with-media">
+                        <div>
+                            <h3>Step 5</h3>
+                            <p>Click customize information. Uncheck all options except for 
+                                "Followers and following" under Connections.</p>
+                        </div>
+                        <div>
+                            <div class="step-media">
+                                <img src="assets/step5.png" />
+                            </div>
+                        </div>
+                    </article>
+                    <article class="help-step with-media">
+                        <div>
+                            <h3>Step 6</h3>
+                            <p>Change format type to JSON.</p>
+                        </div>
+                        <div>
+                            <div class="step-media">
+                                <img src="assets/step6.png" />
+                            </div>
+                        </div>
+                    </article>
+                    <article class="help-step">
+                        <div>
+                            <h3>Step 7</h3>
+                            <p>Start export. Wait a few minutes until you receive an email from 
+                                Instagram telling you your files are available for download.</p>
+                        </div>
+                    </article>
+                    <article class="help-step with-media">
+                        <div>
+                            <h3>Step 8</h3>
+                            <p>Download your data from the email link provided by Instagram.</p>
+                        </div>
+                        <div>
+                            <div class="step-media">
+                                <img src="assets/step8.png" />
+                            </div>
+                        </div>
+                    </article>
+                    <article class="help-step">
+                        <div>
+                            <h3>Step 9</h3>
+                            <p>You may need to extract the downloaded files if they are in a 
+                                compressed format. You should be able to find followers_1.json 
+                                and following.json at /connections/followers_and_following.</p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <h2>Upload Your Data</h2>
+        <div class="upload-grid">
+            <section class="upload-block">
+                <h3>Followers</h3>
+                <p class="subtext">followers_1.json</p>
+                <div class="upload-zone" :class="{ 'is-dragging': draggingTarget === 'followers' }" 
+                        @dragover.prevent="handleDragOver('followers')" 
+                        @dragleave.prevent="handleDragLeave('followers')"
+                        @drop.prevent="handleDrop($event, 'followers')">
+                    <input type="file" accept=".json,application/json" @change="handleFileUpload($event, 'followers')" />
+                    <div v-if="followersFileName" class="uploaded-file-chip">
+                        <span class="uploaded-file-name">{{ followersFileName }}</span>
+                        <button type="button" class="remove-file-btn" @click="removeUploadedFile('followers')" aria-label="Remove followers file">&times;</button>
+                    </div>
+                </div>
+            </section>
+            <section class="upload-block">
+                <h3>Following</h3>
+                <p class="subtext">following.json</p>
+                <div class="upload-zone" :class="{ 'is-dragging': draggingTarget === 'following' }" 
+                        @dragover.prevent="handleDragOver('following')" 
+                        @dragleave.prevent="handleDragLeave('following')"
+                        @drop.prevent="handleDrop($event, 'following')">
+                    <input type="file" accept=".json,application/json" @change="handleFileUpload($event, 'following')" />
+                    <div v-if="followingFileName" class="uploaded-file-chip">
+                        <span class="uploaded-file-name">{{ followingFileName }}</span>
+                        <button type="button" class="remove-file-btn" @click="removeUploadedFile('following')" aria-label="Remove following file">&times;</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="process-actions">
+            <button type="button" class="process-btn" 
+                :disabled="!canProcessData || isProcessing" @click="processData">
+                {{ isProcessing ? 'Processing...' : 'Process Data' }}
+            </button>
+            <span v-if="processErrorMessage" class="process-error">{{ processErrorMessage }}</span>
+        </div>
+
+        <section v-if="loaded" class="analysis-section">
+            <h2>Analysis</h2>
+            <h3>Who doesn’t follow you back</h3>
+            <ul>
+                <li v-for="user in notFollowedBack" :key="user">
+                    {{ user }}
+                </li>
+            </ul>
+        </section>
+  <script src="logic.js"></script>
+</body>
+</html>

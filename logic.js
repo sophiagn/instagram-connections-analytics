@@ -1,0 +1,132 @@
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            followers: null,
+            following: null,
+            followersFile: null,
+            followingFile: null,
+            followersFileName: "",
+            followingFileName: "",
+            draggingTarget: null,
+            showHelp: false,
+            isProcessing: false,
+            processErrorMessage: "",
+        };
+    },
+
+    computed: {
+        canProcessData() {
+            return Boolean(this.followersFile && this.followingFile);
+        },
+
+        loaded() {
+            return Array.isArray(this.followers) && Array.isArray(this.following);
+        },
+
+        notFollowedBack() {
+            const followers = this.followers || [];
+            const following = this.following || [];
+            return following.filter(
+                (user) => !followers.includes(user)
+            );
+        }
+    },
+
+    methods: {
+        handleFileUpload(event, type) {
+            const file = event.target.files[0];
+            this.storeSelectedFile(file, type);
+            event.target.value = "";
+        },
+
+        storeSelectedFile(file, type) {
+            if (!file) return;
+
+            const isJsonFile =
+                file.type === "application/json" || file.name.toLowerCase().endsWith(".json");
+
+            if (!isJsonFile) {
+                this.processErrorMessage = `Uploaded files must be in .json format.`;
+                console.error("Unable to process uploaded files: non-JSON file uploaded");
+                return;
+            }
+
+            this.processErrorMessage = "";
+
+            if (type === "followers") {
+                this.followersFile = file;
+                this.followersFileName = file.name;
+                this.followers = null;
+                return;
+            }
+
+            this.followingFile = file;
+            this.followingFileName = file.name;
+            this.following = null;
+        },
+
+        async processData() {
+            if (!this.canProcessData || this.isProcessing) return;
+
+            this.isProcessing = true;
+
+            try {
+                const [followers, following] = await Promise.all([
+                    this.parseUsersFromFile(this.followersFile, "followers"),
+                    this.parseUsersFromFile(this.followingFile, "following"),
+                ]);
+                this.followers = followers;
+                this.following = following;
+                this.processErrorMessage = "";
+            } catch (error) {
+                this.followers = null;
+                this.following = null;
+                this.processErrorMessage = "Unable to process uploaded files.";
+                console.error(this.processErrorMessage, error);
+            } finally {
+                this.isProcessing = false;
+            }
+        },
+
+        async parseUsersFromFile(file, type) {
+            const text = await file.text();
+            const data = JSON.parse(text);
+
+            if (type === "followers") {
+                const followersData = data.followers || data.relationships_followers || [];
+                return followersData.map((f) => f.string_list_data[0].value);
+            }
+
+            const followingData = data.following || data.relationships_following || [];
+            return followingData.map((f) => f.string_list_data[0].value);
+        },
+
+        handleDragOver(type) {
+            this.draggingTarget = type;
+        },
+
+        handleDragLeave(type) {
+            if (this.draggingTarget === type) {
+                this.draggingTarget = null;
+            }
+        },
+
+        handleDrop(event, type) {
+            this.draggingTarget = null;
+            const file = event.dataTransfer.files[0];
+            this.storeSelectedFile(file, type);
+        },
+
+        removeUploadedFile(type) {
+            if (type === "followers") {
+                this.followersFile = null;
+                this.followersFileName = "";
+            } else {
+                this.followingFile = null;
+                this.followingFileName = "";
+            }
+        }
+    }
+}).mount("#app");
