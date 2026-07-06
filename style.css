@@ -257,6 +257,15 @@ input[type="file"] {
 	margin-bottom: 8px;
 }
 
+.analysis-section a {
+	color: #1f4f9a;
+	text-decoration: none;
+}
+
+.analysis-section a:hover {
+	text-decoration: underline;
+}
+
 /* -------- Media Breakpoints -------- */
 
 @media (max-width: 800px) {

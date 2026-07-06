@@ -17,7 +17,6 @@
                 <span class="chevron" :class="{ open: showHelp }" aria-hidden="true"></span>
                 <span>How to download your Instagram data</span>
             </button>
-
             <div v-show="showHelp" class="help-panel">
                 <p class="help-intro">Follow these steps to export the two JSON files this app needs.</p>
                 <div class="help-steps">
@@ -57,44 +56,49 @@
                             </div>
                         </div>
                     </article>
-                    <article class="help-step with-media">
+                    <article class="help-step">
                         <div>
                             <h3>Step 6</h3>
+                            <p>Change the date range to "All time".</p>
+                        </div>
+                    </article>                    
+                    <article class="help-step with-media">
+                        <div>
+                            <h3>Step 7</h3>
                             <p>Change format type to JSON.</p>
                         </div>
                         <div>
                             <div class="step-media">
-                                <img src="assets/step6.png" />
+                                <img src="assets/step7.png" />
                             </div>
                         </div>
                     </article>
                     <article class="help-step">
                         <div>
-                            <h3>Step 7</h3>
+                            <h3>Step 8</h3>
                             <p>Start export. Wait a few minutes until you receive an email from 
                                 Instagram telling you your files are available for download.</p>
                         </div>
                     </article>
                     <article class="help-step with-media">
                         <div>
-                            <h3>Step 8</h3>
+                            <h3>Step 9</h3>
                             <p>Download your data from the email link provided by Instagram.</p>
                         </div>
                         <div>
                             <div class="step-media">
-                                <img src="assets/step8.png" />
+                                <img src="assets/step9.png" />
                             </div>
                         </div>
                     </article>
                     <article class="help-step">
                         <div>
-                            <h3>Step 9</h3>
+                            <h3>Step 10</h3>
                             <p>You may need to extract the downloaded files if they are in a 
                                 compressed format. You should be able to find followers_1.json 
                                 and following.json at /connections/followers_and_following.</p>
                         </div>
                     </article>
-
                 </div>
             </div>
         </section>
@@ -143,8 +147,8 @@
             <h2>Analysis</h2>
             <h3>Who doesn’t follow you back</h3>
             <ul>
-                <li v-for="user in notFollowedBack" :key="user">
-                    {{ user }}
+                <li v-for="user in notFollowedBack" :key="user.username">
+                    <a :href="user.href" target="_blank" rel="noopener noreferrer">{{ user.username }}</a>
                 </li>
             </ul>
         </section>

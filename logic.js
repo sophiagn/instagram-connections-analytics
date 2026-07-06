@@ -28,8 +28,9 @@ createApp({
         notFollowedBack() {
             const followers = this.followers || [];
             const following = this.following || [];
+            const followerUsernames = new Set(followers.map((user) => user.username));
             return following.filter(
-                (user) => !followers.includes(user)
+                (user) => !followerUsernames.has(user.username)
             );
         }
     },
@@ -90,17 +91,47 @@ createApp({
             }
         },
 
+        parseUsernameFromHref(href) {
+            if (!href || typeof href !== "string") return "";
+            try {
+                const { pathname } = new URL(href);
+                const segments = pathname.split("/").filter(Boolean);
+                const candidate = segments[segments.length - 1];
+                if (!candidate || candidate === "_u") return "";
+                return candidate;
+            } catch {
+                return "";
+            }
+        },
+
+        extractUsers(entries) {
+            if (!Array.isArray(entries)) return [];
+
+            return entries
+                .map((entry) => {
+                    const href = entry?.string_list_data?.[0]?.href || "";
+                    const username = this.parseUsernameFromHref(href);
+                    if (!href || !username) return null;
+                    return { username, href };
+                })
+                .filter(Boolean);
+        },
+
         async parseUsersFromFile(file, type) {
             const text = await file.text();
             const data = JSON.parse(text);
 
-            if (type === "followers") {
-                const followersData = data.followers || data.relationships_followers || [];
-                return followersData.map((f) => f.string_list_data[0].value);
+            let entries = [];
+
+            if (Array.isArray(data)) {
+                entries = data;
+            } else if (type === "followers") {
+                entries = data.followers || data.relationships_followers || [];
+            } else {
+                entries = data.following || data.relationships_following || [];
             }
 
-            const followingData = data.following || data.relationships_following || [];
-            return followingData.map((f) => f.string_list_data[0].value);
+            return this.extractUsers(entries);
         },
 
         handleDragOver(type) {
