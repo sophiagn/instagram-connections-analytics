@@ -159,14 +159,16 @@
             <span v-if="processErrorMessage" class="process-error">{{ processErrorMessage }}</span>
         </div>
 
-        <section v-if="loaded" class="analysis-section">
+        <section v-if="loaded">
             <h2>Analysis</h2>
-            <h3>Who doesn’t follow you back</h3>
-            <ul>
-                <li v-for="user in notFollowedBack" :key="user.username">
-                    <a :href="user.href" target="_blank" rel="noopener noreferrer">{{ user.username }}</a>
-                </li>
-            </ul>
+            <h3>* people don't follow you back:</h3>
+            <div class="analysis-section">
+                <ul>
+                    <li v-for="user in notFollowedBack" :key="user.username">
+                        <a :href="user.href" target="_blank" rel="noopener noreferrer">{{ user.username }}</a>
+                    </li>
+                </ul>
+            </div>
         </section>
   <script src="logic.js"></script>
 </body>

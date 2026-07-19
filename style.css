@@ -24,6 +24,7 @@ body {
 h1,
 h2 {
 	margin-top: 0;
+	color: #2d0173;
 }
 
 h3 {
@@ -40,6 +41,8 @@ img {
 ul {
 	padding-left: 20px;
 	word-break: break-word;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 .subtext {
@@ -257,6 +260,7 @@ input[type="file"] {
 	align-items: center;
 	gap: 10px;
 	flex-wrap: wrap;
+	margin-bottom: 40px;
 }
 
 .process-btn {
@@ -288,9 +292,9 @@ input[type="file"] {
 /* -------- Analysis -------- */
 
 .analysis-section {
-	margin-top: 16px;
+	margin-top: -10px;
 	padding: 14px;
-	border: 1px solid #e1e6ef;
+	border: 1px solid #a6c2f4;
 	border-radius: 12px;
 	background: #f8fbff;
 }
