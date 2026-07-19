@@ -26,6 +26,11 @@ h2 {
 	margin-top: 0;
 }
 
+h3 {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
 img {
 	max-width: 100%;
 	height: auto;
@@ -143,15 +148,19 @@ ul {
     margin-top: -30px;
 }
 
+.upload-block {
+	margin-bottom: -30px;
+}
+
 .upload-zone {
 	width: 100%;
 	max-width: none;
 	margin: 16px 0;
 	padding: 20px;
-	border: 2px dashed #8a8a8a;
+	border: 2px dashed #b0dbff;
 	border-radius: 12px;
-	background: #fafafa;
-	transition: border-color 0.2s ease, background-color 0.2s ease;
+	background: #f5faff;
+	transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .upload-zone.is-dragging {
@@ -159,16 +168,54 @@ ul {
 	background: #edf9f2;
 }
 
+.upload-zone.is-dragging .upload-link {
+	color: #1f7a53;
+}
+
+.upload-zone.is-dragging .upload-link:hover {
+	color: #0b3927;
+}
+
 .upload-zone p {
 	margin: 0 0 8px;
 }
 
 input[type="file"] {
-	max-width: 100%;
+	display: none;
+}
+
+.upload-prompt {
+	text-align: center;
+	padding: 10px 0;
+}
+
+.upload-prompt p {
+	color: #52606d;
+	font-weight: 500;
+}
+
+.or-text {
+	display: block;
+	font-size: 0.85rem;
+	color: #8a8a8a;
+	margin: 4px 0;
+}
+
+.upload-link {
+	background: none;
+	border: none;
+	color: #44a2ff;
+	font: inherit;
+	cursor: pointer;
+	pointer-events: auto;
+	transition: color 0.2s ease;
+}
+
+.upload-link:hover {
+	color: #3884d1;
 }
 
 .uploaded-file-chip {
-	margin-top: 20px;
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
@@ -205,7 +252,7 @@ input[type="file"] {
 /* -------- Process Button -------- */
 
 .process-actions {
-	margin-top: 8px;
+	margin-top: 50px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -213,14 +260,14 @@ input[type="file"] {
 }
 
 .process-btn {
-    border: 1px solid rgb(205 213 231);
-    color: #0f1636;
+    border: 1px solid rgb(220, 205, 231);
+    color: #130421;
 	border-radius: 10px;
 	padding: 10px 16px;
 	font: inherit;
 	font-weight: 600;
 	cursor: pointer;
-    background: linear-gradient(180deg, #e2e8fa 0%, #bcd1f0 100%);
+    background: linear-gradient(180deg, #f8f3ff 0%, #bcafd3 100%);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 

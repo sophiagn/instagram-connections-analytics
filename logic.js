@@ -39,7 +39,13 @@ createApp({
         handleFileUpload(event, type) {
             const file = event.target.files[0];
             this.storeSelectedFile(file, type);
-            event.target.value = "";
+        },
+
+        triggerFileInput(type) {
+            const uploadBlocks = document.querySelectorAll('.upload-block');
+            const blockIndex = type === "followers" ? 0 : 1;
+            const input = uploadBlocks[blockIndex].querySelector('input[type="file"]');
+            if (input) input.click();
         },
 
         storeSelectedFile(file, type) {

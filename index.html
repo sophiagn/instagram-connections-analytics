@@ -107,29 +107,45 @@
         <div class="upload-grid">
             <section class="upload-block">
                 <h3>Followers</h3>
-                <p class="subtext">followers_1.json</p>
+                <p class="subtext">Upload all followers_*.json files</p>
                 <div class="upload-zone" :class="{ 'is-dragging': draggingTarget === 'followers' }" 
                         @dragover.prevent="handleDragOver('followers')" 
                         @dragleave.prevent="handleDragLeave('followers')"
                         @drop.prevent="handleDrop($event, 'followers')">
                     <input type="file" accept=".json,application/json" @change="handleFileUpload($event, 'followers')" />
+                    <div class="upload-prompt">
+                        <p>Drag file(s) here<br>
+                            <span class="or-text">or</span>
+                            <button type="button" class="upload-link" @click.stop="triggerFileInput('followers')">
+                                Upload from device
+                            </button>
+                        </p>
+                    </div>
                     <div v-if="followersFileName" class="uploaded-file-chip">
                         <span class="uploaded-file-name">{{ followersFileName }}</span>
-                        <button type="button" class="remove-file-btn" @click="removeUploadedFile('followers')" aria-label="Remove followers file">&times;</button>
+                        <button type="button" class="remove-file-btn" @click.stop="removeUploadedFile('followers')" aria-label="Remove followers file">&times;</button>
                     </div>
                 </div>
             </section>
             <section class="upload-block">
                 <h3>Following</h3>
-                <p class="subtext">following.json</p>
+                <p class="subtext">Upload following.json file</p>
                 <div class="upload-zone" :class="{ 'is-dragging': draggingTarget === 'following' }" 
                         @dragover.prevent="handleDragOver('following')" 
                         @dragleave.prevent="handleDragLeave('following')"
                         @drop.prevent="handleDrop($event, 'following')">
                     <input type="file" accept=".json,application/json" @change="handleFileUpload($event, 'following')" />
+                    <div class="upload-prompt">
+                        <p>Drag file here<br>
+                            <span class="or-text">or</span>
+                            <button type="button" class="upload-link" @click.stop="triggerFileInput('following')">
+                                Upload from device
+                            </button>
+                        </p>
+                    </div>
                     <div v-if="followingFileName" class="uploaded-file-chip">
                         <span class="uploaded-file-name">{{ followingFileName }}</span>
-                        <button type="button" class="remove-file-btn" @click="removeUploadedFile('following')" aria-label="Remove following file">&times;</button>
+                        <button type="button" class="remove-file-btn" @click.stop="removeUploadedFile('following')" aria-label="Remove following file">&times;</button>
                     </div>
                 </div>
             </section>
@@ -137,7 +153,7 @@
 
         <div class="process-actions">
             <button type="button" class="process-btn" 
-                :disabled="!canProcessData || isProcessing" @click="processData">
+                :disabled="!canProcessData || isProcessing || loaded" @click="processData">
                 {{ isProcessing ? 'Processing...' : 'Process Data' }}
             </button>
             <span v-if="processErrorMessage" class="process-error">{{ processErrorMessage }}</span>
