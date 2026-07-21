@@ -46,7 +46,7 @@ ul {
 }
 
 .subtext {
-	margin-top: -15px;
+	margin-top: -20px;
 }
 
 .chevron {
@@ -218,6 +218,12 @@ input[type="file"] {
 	color: #3884d1;
 }
 
+.uploaded-file-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
 .uploaded-file-chip {
 	display: inline-flex;
 	align-items: center;
@@ -291,6 +297,15 @@ input[type="file"] {
 
 /* -------- Analysis -------- */
 
+.analysis-block h2 {
+	margin-bottom: 8px;
+}
+
+.analysis-block h3 {
+	margin-top: 0;
+	margin-bottom: 8px;
+}
+
 .analysis-section {
 	margin-top: -10px;
 	padding: 14px;
@@ -299,22 +314,23 @@ input[type="file"] {
 	background: #f8fbff;
 }
 
-.analysis-section h2 {
-	margin-bottom: 8px;
-}
-
-.analysis-section h3 {
-	margin-top: 0;
-	margin-bottom: 8px;
-}
-
 .analysis-section a {
 	color: #1f4f9a;
 	text-decoration: none;
 }
 
+.analysis-section a:visited {
+	color: #551a8b;
+}
+
 .analysis-section a:hover {
 	text-decoration: underline;
+}
+
+.analysis-subtext {
+	font-style: italic;
+    margin-top: -15px;
+    margin-bottom: 20px;
 }
 
 /* -------- Media Breakpoints -------- */

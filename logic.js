@@ -5,9 +5,9 @@ createApp({
         return {
             followers: null,
             following: null,
-            followersFile: null,
+            followersFiles: [],
+            followersFileNames: [],
             followingFile: null,
-            followersFileName: "",
             followingFileName: "",
             draggingTarget: null,
             showHelp: false,
@@ -18,7 +18,7 @@ createApp({
 
     computed: {
         canProcessData() {
-            return Boolean(this.followersFile && this.followingFile);
+            return Boolean(this.followersFiles.length > 0 && this.followingFile);
         },
 
         loaded() {
@@ -37,8 +37,10 @@ createApp({
 
     methods: {
         handleFileUpload(event, type) {
-            const file = event.target.files[0];
-            this.storeSelectedFile(file, type);
+            const files = Array.from(event.target.files);
+            files.forEach(file => {
+                this.storeSelectedFile(file, type);
+            });
         },
 
         triggerFileInput(type) {
@@ -63,9 +65,11 @@ createApp({
             this.processErrorMessage = "";
 
             if (type === "followers") {
-                this.followersFile = file;
-                this.followersFileName = file.name;
-                this.followers = null;
+                if (!this.followersFiles.some(f => f.name === file.name)) {
+                    this.followersFiles.push(file);
+                    this.followersFileNames.push(file.name);
+                    this.followers = null;
+                }
                 return;
             }
 
@@ -80,10 +84,14 @@ createApp({
             this.isProcessing = true;
 
             try {
-                const [followers, following] = await Promise.all([
-                    this.parseUsersFromFile(this.followersFile, "followers"),
-                    this.parseUsersFromFile(this.followingFile, "following"),
-                ]);
+                const followerPromises = this.followersFiles.map(file =>
+                    this.parseUsersFromFile(file, "followers")
+                );
+                const allFollowersArrays = await Promise.all(followerPromises);
+                const followers = allFollowersArrays.flat();
+                
+                const following = await this.parseUsersFromFile(this.followingFile, "following");
+                
                 this.followers = followers;
                 this.following = following;
                 this.processErrorMessage = "";
@@ -152,14 +160,17 @@ createApp({
 
         handleDrop(event, type) {
             this.draggingTarget = null;
-            const file = event.dataTransfer.files[0];
-            this.storeSelectedFile(file, type);
+            const files = Array.from(event.dataTransfer.files);
+            files.forEach(file => {
+                this.storeSelectedFile(file, type);
+            });
         },
 
-        removeUploadedFile(type) {
+        removeUploadedFile(type, index) {
             if (type === "followers") {
-                this.followersFile = null;
-                this.followersFileName = "";
+                this.followersFiles.splice(index, 1);
+                this.followersFileNames.splice(index, 1);
+                this.followers = null;
             } else {
                 this.followingFile = null;
                 this.followingFileName = "";

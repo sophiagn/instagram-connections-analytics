@@ -94,9 +94,10 @@
                     <article class="help-step">
                         <div>
                             <h3>Step 10</h3>
-                            <p>You may need to extract the downloaded files if they are in a 
-                                compressed format. You should be able to find followers_1.json 
-                                and following.json at /connections/followers_and_following.</p>
+                            <p>You may need to extract the downloaded files if they are in a compressed 
+                                format. You should be able to find followers_1.json (plus any additional 
+                                followers_*.json files if you have several thousand followers) and 
+                                following.json at /connections/followers_and_following.</p>
                         </div>
                     </article>
                 </div>
@@ -112,7 +113,7 @@
                         @dragover.prevent="handleDragOver('followers')" 
                         @dragleave.prevent="handleDragLeave('followers')"
                         @drop.prevent="handleDrop($event, 'followers')">
-                    <input type="file" accept=".json,application/json" @change="handleFileUpload($event, 'followers')" />
+                    <input type="file" multiple accept=".json,application/json" @change="handleFileUpload($event, 'followers')" />
                     <div class="upload-prompt">
                         <p>Drag file(s) here<br>
                             <span class="or-text">or</span>
@@ -121,11 +122,12 @@
                             </button>
                         </p>
                     </div>
-                    <div v-if="followersFileName" class="uploaded-file-chip">
-                        <span class="uploaded-file-name">{{ followersFileName }}</span>
-                        <button type="button" class="remove-file-btn" @click.stop="removeUploadedFile('followers')" aria-label="Remove followers file">&times;</button>
+                    <div v-if="followersFileNames.length > 0" class="uploaded-file-chips">
+                        <div v-for="(fileName, index) in followersFileNames" :key="index" class="uploaded-file-chip">
+                            <span class="uploaded-file-name">{{ fileName }}</span>
+                            <button type="button" class="remove-file-btn" @click.stop="removeUploadedFile('followers', index)" aria-label="Remove followers file">&times;</button>
+                        </div>
                     </div>
-                </div>
             </section>
             <section class="upload-block">
                 <h3>Following</h3>
@@ -159,9 +161,10 @@
             <span v-if="processErrorMessage" class="process-error">{{ processErrorMessage }}</span>
         </div>
 
-        <section v-if="loaded">
+        <section v-if="loaded" class="analysis-block">
             <h2>Analysis</h2>
-            <h3>* people don't follow you back:</h3>
+            <h3><span>{{ notFollowedBack.length }}</span> people don't follow you back</h3>
+            <p class="analysis-subtext">Some of these accounts may be inactive.</p>
             <div class="analysis-section">
                 <ul>
                     <li v-for="user in notFollowedBack" :key="user.username">
