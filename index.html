@@ -167,11 +167,13 @@
             <h3><span>{{ notFollowedBack.length }}</span> people don't follow you back</h3>
             <p class="analysis-subtext">Some of these accounts may be inactive.</p>
             <div class="analysis-section">
+                <input type="search" v-model="searchQuery" class="search-input" placeholder="Search usernames..." />
                 <ul>
-                    <li v-for="user in notFollowedBack" :key="user.username">
+                    <li v-for="user in filteredNotFollowedBack" :key="user.username">
                         <a :href="user.href" target="_blank" rel="noopener noreferrer">{{ user.username }}</a>
                     </li>
                 </ul>
+                <p v-if="filteredNotFollowedBack.length === 0" class="no-results">No results for "{{ searchQuery }}"</p>
             </div>
         </section>
   <script src="logic.js"></script>

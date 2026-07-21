@@ -13,6 +13,7 @@ createApp({
             showHelp: false,
             isProcessing: false,
             processErrorMessage: "",
+            searchQuery: "",
         };
     },
 
@@ -31,6 +32,14 @@ createApp({
             const followerUsernames = new Set(followers.map((user) => user.username));
             return following.filter(
                 (user) => !followerUsernames.has(user.username)
+            );
+        },
+
+        filteredNotFollowedBack() {
+            const query = this.searchQuery.trim().toLowerCase();
+            if (!query) return this.notFollowedBack;
+            return this.notFollowedBack.filter(user =>
+                user.username.toLowerCase().includes(query)
             );
         }
     },
@@ -89,7 +98,7 @@ createApp({
                 );
                 const allFollowersArrays = await Promise.all(followerPromises);
                 const followers = allFollowersArrays.flat();
-                
+
                 const following = await this.parseUsersFromFile(this.followingFile, "following");
                 
                 this.followers = followers;
