@@ -7,7 +7,7 @@ body {
 	padding: 16px;
 	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	line-height: 1.4;
-	background: linear-gradient(180deg, #d9cbf5 0%, #ffe4b3 100%);
+    background: linear-gradient(180deg, #b08cf8 0%, #ffc967 100%);
 	color: #1f2933;
     min-height: 100vh;
 }
@@ -18,7 +18,7 @@ body {
 	background: #ffffff;
 	border-radius: 12px;
 	padding: 16px;
-	box-shadow: 0 8px 24px rgba(8, 29, 71, 0.521);
+	box-shadow: 0px 0px 8px 2px rgba(8, 29, 71, 0.521);
 }
 
 h1,
@@ -77,8 +77,8 @@ ul {
 	padding: 10px 14px;
 	border: 1px solid #ece5ca;
 	border-radius: 12px;
-    background: linear-gradient(180deg, #fbf7ff 0%, #fff6e8 100%);
-    color: #415469;
+    background: linear-gradient(180deg, #f9f2ff 0%, #edd7b5 100%);
+	color: #415469;
 	font: inherit;
 	font-weight: 700;
     font-size: 12px;
@@ -88,7 +88,7 @@ ul {
 
 .help-toggle:hover {
 	border-color: #dae2ec;
-    background: linear-gradient(180deg, #f7f3fc 0%, #f7f0e5 100%);
+    background: linear-gradient(180deg, #efe7f5 0%, #e4cfaf 100%);
 }
 
 .help-panel {
@@ -271,19 +271,19 @@ input[type="file"] {
 }
 
 .process-btn {
-    border: 1px solid rgb(220, 205, 231);
-    color: #130421;
+    border: 1px solid rgb(231 223 205);
+    color: #2e1c4a;
 	border-radius: 10px;
 	padding: 10px 16px;
 	font: inherit;
 	font-weight: 600;
 	cursor: pointer;
-    background: linear-gradient(180deg, #f8f3ff 0%, #bcafd3 100%);
+	background: linear-gradient(180deg, #fff6df 0%, #d2b8ff 100%);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .process-btn:hover:not(:disabled) {
-    background: linear-gradient(180deg, #d6ddee 0%, #b5c8e7 100%);
+    background: linear-gradient(180deg, #f2ead4 0%, #c5adef 100%);
 }
 
 .process-btn:disabled {
