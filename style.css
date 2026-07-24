@@ -131,6 +131,7 @@ ul {
 .help-step p {
 	margin: 0;
 	color: #52606d;
+	overflow-wrap: anywhere;
 }
 
 .step-media {
